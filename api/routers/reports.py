@@ -37,7 +37,6 @@ def create_report(
     """
     Create new report.
     """
-    # report = ReportCreate.model_validate(report_in)
     return reports.create_report(session, report_in, current_user.id)
 
 

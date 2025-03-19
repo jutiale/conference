@@ -9,11 +9,8 @@ from api.utils import get_user_report
 
 def read_presentations(session: SessionDep, user_id: int, skip: int, limit: int):
     user_presentations = session.exec(
-        select(UserPresentation).where(UserPresentation.user_id == user_id)
-    ).offset(skip).limit(limit)
-
-    if not user_presentations:
-        raise HTTPException(status_code=404, detail="No presentations found for this user")
+        select(UserPresentation).where(UserPresentation.user_id == user_id).offset(skip).limit(limit)
+    ).all()
 
     presentations = []
     for up in user_presentations:
@@ -25,7 +22,7 @@ def read_presentations(session: SessionDep, user_id: int, skip: int, limit: int)
 
 def create_presentation(session: SessionDep, presentation: PresentationCreate, user_id: int):
     # Access check
-    user_report = get_user_report(session, presentation.report_id, user_id)
+    report = get_user_report(session, presentation.report_id, user_id)
 
     overlapping_presentation = session.exec(select(Presentation).where(
             Presentation.room_id == presentation.room_id,
@@ -44,12 +41,22 @@ def create_presentation(session: SessionDep, presentation: PresentationCreate, u
     session.refresh(new_presentation)
 
     # Add all report authors to presentation
-    users_reports = session.exec(select(UserReport).where(UserReport.report_id == user_report.report_id)).all()
+    users_reports = session.exec(select(UserReport).where(UserReport.report_id == report.id)).all()
     for user in users_reports:
-        user_presentation = UserPresentation(user_id=user.user_id, presentation_id=new_presentation.id)
+        user_presentation = UserPresentation(user_id=user.user_id, presentation_id=new_presentation.id,
+                                             user_role=Roles.presenter)
         session.add(user_presentation)
 
     session.commit()
+
+    return PresentationRead(
+        id=new_presentation.id,
+        report_id=new_presentation.report_id,
+        time_start=new_presentation.time_start,
+        time_end=new_presentation.time_end,
+        room_id=new_presentation.room_id,
+        role=Roles.presenter.name
+    )
 
 
 
