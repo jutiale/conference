@@ -17,8 +17,8 @@ class UserReport(SQLModel, table=True):
     __tablename__ = "users_reports"
 
     id: Union[int, None] = Field(default=None, primary_key=True)
-    user_id: int = Field(foreign_key="users.id")
-    report_id: int = Field(foreign_key="reports.id")
+    user_id: int = Field(foreign_key="users.id", ondelete="CASCADE")
+    report_id: int = Field(foreign_key="reports.id", ondelete="CASCADE")
 
 
 class User(SQLModel, table=True):
@@ -48,12 +48,12 @@ class Presentation(SQLModel, table=True):
     __tablename__ = "presentations"
 
     id: Union[int, None] = Field(default=None, primary_key=True)
-    report_id: int = Field(foreign_key="reports.id")
+    report_id: int = Field(foreign_key="reports.id", ondelete="CASCADE")
     time_start: time
     time_end: time
     room_id: int = Field(foreign_key="rooms.id")
 
-    users_presentations: "UserPresentation" = Relationship(back_populates="presentation")
+    users_presentations: list["UserPresentation"] = Relationship(back_populates="presentation", cascade_delete=True)
 
 
 class UserPresentation(SQLModel, table=True):
@@ -61,7 +61,7 @@ class UserPresentation(SQLModel, table=True):
 
     id: Union[int, None] = Field(default=None, primary_key=True)
     user_id: int = Field(foreign_key="users.id")
-    presentation_id: int = Field(foreign_key="presentations.id")
+    presentation_id: int = Field(foreign_key="presentations.id", ondelete="CASCADE")
     user_role: Roles
 
     presentation: "Presentation" = Relationship(back_populates="users_presentations")
