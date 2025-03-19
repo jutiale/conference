@@ -5,6 +5,7 @@ from api.routers import login
 from api.routers import reports
 from api.routers import presentations
 from api.routers import rooms
+from api.routers import schedule
 
 
 api_router = APIRouter()
@@ -13,3 +14,4 @@ api_router.include_router(login.router)
 api_router.include_router(reports.router)
 api_router.include_router(presentations.router)
 api_router.include_router(rooms.router)
+api_router.include_router(schedule.router)
