@@ -42,7 +42,7 @@ def create_report(
 
 
 @router.put("/{report_id}", response_model=ReportRead)
-def update_item(
+def update_report(
     *,
     session: SessionDep,
     current_user: CurrentUser,
@@ -57,7 +57,7 @@ def update_item(
 
 
 @router.delete("/{report_id}")
-def delete_item(
+def delete_report(
     session: SessionDep, current_user: CurrentUser, report_id: int
 ) -> Any:
     """
