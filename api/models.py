@@ -43,6 +43,8 @@ class Room(SQLModel, table=True):
     id: Union[int, None] = Field(default=None, primary_key=True)
     name: str
 
+    presentations: list["Presentation"] = Relationship(back_populates="room")
+
 
 class Presentation(SQLModel, table=True):
     __tablename__ = "presentations"
@@ -54,6 +56,7 @@ class Presentation(SQLModel, table=True):
     room_id: int = Field(foreign_key="rooms.id")
 
     users_presentations: list["UserPresentation"] = Relationship(back_populates="presentation", cascade_delete=True)
+    room: "Room" = Relationship(back_populates="presentations")
 
 
 class UserPresentation(SQLModel, table=True):

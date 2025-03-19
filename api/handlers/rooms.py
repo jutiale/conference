@@ -26,6 +26,9 @@ def create_room(session: SessionDep, room: RoomCreate):
 
 def delete_room(session: SessionDep, room_id: int):
     room = session.exec(select(Room).where(Room.id == room_id)).first()
+    if room.presentations:
+        raise HTTPException(status_code=400, detail="There are presentations in this room")
+
     session.delete(room)
     session.commit()
     return True
