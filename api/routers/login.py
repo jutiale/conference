@@ -14,7 +14,7 @@ from api.handlers import login
 router = APIRouter(tags=["login"])
 
 
-@router.post("/login/access-token")
+@router.post("/login/access-token", summary="Получить токен")
 def login_access_token(
     session: SessionDep, form_data: Annotated[OAuth2PasswordRequestForm, Depends()]
 ) -> Token:
@@ -33,12 +33,5 @@ def login_access_token(
         )
     )
 
-
-@router.post("/login/test-token", response_model=UserRead)
-def test_token(current_user: CurrentUser) -> Any:
-    """
-    Test access token
-    """
-    return current_user
 
 

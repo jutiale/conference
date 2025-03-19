@@ -12,7 +12,7 @@ from api.deps import (
 router = APIRouter(prefix="/users", tags=["users"])
 
 
-@router.post("/signup", response_model=UserRead)
+@router.post("/signup", summary="Зарегистрироваться в системе", response_model=UserRead)
 def register_user(session: SessionDep, user_in: UserRegister) -> Any:
     """
     Create new user
@@ -28,7 +28,7 @@ def register_user(session: SessionDep, user_in: UserRegister) -> Any:
     return user
 
 
-@router.get("/me", response_model=UserRead)
+@router.get("/me", summary="Получить информацию о себе", response_model=UserRead)
 def read_user_me(current_user: CurrentUser) -> Any:
     """
     Get current user.

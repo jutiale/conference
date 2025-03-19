@@ -12,7 +12,7 @@ from api.handlers import reports
 router = APIRouter(prefix="/report", tags=["reports"])
 
 
-@router.get("/", response_model=list[ReportRead])
+@router.get("/", summary="Получить свои доклады", response_model=list[ReportRead])
 def read_reports(
     session: SessionDep, current_user: CurrentUser, skip: int = 0, limit: int = 100
 ) -> Any:
@@ -22,7 +22,7 @@ def read_reports(
     return reports.read_reports(session, current_user.id, skip, limit)
 
 
-@router.get("/{report_id}", response_model=ReportRead)
+@router.get("/{report_id}", summary="Получить доклад по id", response_model=ReportRead)
 def read_report(session: SessionDep, current_user: CurrentUser, report_id: int) -> Any:
     """
     Get report by ID.
@@ -30,7 +30,7 @@ def read_report(session: SessionDep, current_user: CurrentUser, report_id: int) 
     return reports.get_report_by_id(session, report_id, current_user.id)
 
 
-@router.post("/", response_model=ReportRead)
+@router.post("/", summary="Создать доклад", response_model=ReportRead)
 def create_report(
     *, session: SessionDep, current_user: CurrentUser, report_in: ReportCreate
 ) -> Any:
@@ -40,7 +40,7 @@ def create_report(
     return reports.create_report(session, report_in, current_user.id)
 
 
-@router.put("/{report_id}", response_model=ReportRead)
+@router.put("/{report_id}", summary="Изменить доклад", response_model=ReportRead)
 def update_report(
     *,
     session: SessionDep,
@@ -55,7 +55,7 @@ def update_report(
     return reports.update_report(session, report_id, current_user.id, report_in)
 
 
-@router.delete("/{report_id}")
+@router.delete("/{report_id}", summary="Удалить доклад")
 def delete_report(
     session: SessionDep, current_user: CurrentUser, report_id: int
 ) -> Any:
