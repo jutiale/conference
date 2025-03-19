@@ -54,12 +54,12 @@ def update_item(
 
     return presentations.update_presentation(session, presentation_id, current_user.id, presentation_in)
 
-#
-# @router.delete("/{report_id}")
-# def delete_item(
-#     session: SessionDep, current_user: CurrentUser, report_id: int
-# ) -> Any:
-#     """
-#     Delete a report.
-#     """
-#     return reports.delete_report(session, report_id, current_user.id)
+
+@router.delete("/{presentation_id}")
+def delete_presentation(
+    session: SessionDep, current_user: CurrentUser, presentation_id: int
+) -> Any:
+    """
+    Delete a presentation.
+    """
+    return presentations.delete_presentation(session, presentation_id, current_user.id)

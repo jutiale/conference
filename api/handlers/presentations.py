@@ -98,3 +98,10 @@ def update_presentation(session: SessionDep, presentation_id: int, user_id: int,
         room_id=presentation.room_id,
         role=Roles.presenter.value
     )
+
+
+def delete_presentation(session: SessionDep, presentation_id: int, user_id: int):
+    presentation = get_presentation_for_presenter(session, presentation_id, user_id)
+    session.delete(presentation)
+    session.commit()
+    return True
