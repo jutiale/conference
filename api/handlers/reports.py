@@ -8,12 +8,11 @@ from api.schemas.reports import ReportRead, ReportCreate, ReportUpdate
 from api.utils import get_user_report
 
 
-def read_reports(session: SessionDep, current_user: CurrentUser, skip: int, limit: int) -> list[ReportRead]:
+def read_reports(session: SessionDep, user_id: int, skip: int, limit: int) -> list[ReportRead]:
     stmt = (
-        select(Report).join(UserReport).where(UserReport.user_id == current_user.id).offset(skip).limit(limit)
+        select(Report).join(UserReport).where(UserReport.user_id == user_id).offset(skip).limit(limit)
     )
     reports = session.exec(stmt).all()
-    print(reports)
     return reports
 
 

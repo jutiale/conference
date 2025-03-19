@@ -9,7 +9,7 @@ from api.models import Report, UserReport
 def get_user_report(session: Session, report_id: int, user_id: int) -> Type[Report]:
     """
     Gets a report by id and checks if user has an access.
-    If report not founf — 404.
+    If report not found — 404.
     If user has no rights — 403.
     """
     report = session.get(Report, report_id)

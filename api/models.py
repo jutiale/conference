@@ -28,8 +28,6 @@ class User(SQLModel, table=True):
     name: str
     password_hash: str
 
-    reports: list["Report"] = Relationship(back_populates="users", link_model=UserReport)
-
 
 class Report(SQLModel, table=True):
     __tablename__ = "reports"
@@ -37,8 +35,6 @@ class Report(SQLModel, table=True):
     id: Union[int, None] = Field(default=None, primary_key=True)
     name: str
     text: str
-
-    users: list["User"] = Relationship(back_populates="reports", link_model=UserReport)
 
 
 class Room(SQLModel, table=True):
@@ -57,6 +53,8 @@ class Presentation(SQLModel, table=True):
     time_end: time
     room_id: int = Field(foreign_key="rooms.id")
 
+    users_presentations: "UserPresentation" = Relationship(back_populates="presentation")
+
 
 class UserPresentation(SQLModel, table=True):
     __tablename__ = "users_presentations"
@@ -65,3 +63,6 @@ class UserPresentation(SQLModel, table=True):
     user_id: int = Field(foreign_key="users.id")
     presentation_id: int = Field(foreign_key="presentations.id")
     user_role: Roles
+
+    presentation: "Presentation" = Relationship(back_populates="users_presentations")
+

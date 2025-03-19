@@ -19,11 +19,11 @@ def read_reports(
     """
     Retrieve items.
     """
-    return reports.read_reports(session, current_user, skip, limit)
+    return reports.read_reports(session, current_user.id, skip, limit)
 
 
 @router.get("/{report_id}", response_model=ReportRead)
-def read_item(session: SessionDep, current_user: CurrentUser, report_id: int) -> Any:
+def read_report(session: SessionDep, current_user: CurrentUser, report_id: int) -> Any:
     """
     Get report by ID.
     """
