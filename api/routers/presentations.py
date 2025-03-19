@@ -23,7 +23,7 @@ def read_presentations(
 
 
 @router.get("/{presentation_id}", response_model=PresentationRead)
-def read_presentattion(session: SessionDep, current_user: CurrentUser, presentation_id: int) -> Any:
+def read_presentation(session: SessionDep, current_user: CurrentUser, presentation_id: int) -> Any:
     """
     Get presentation by ID.
     """
@@ -41,7 +41,7 @@ def create_presentation(
 
 
 @router.put("/{presentation_id}", response_model=PresentationRead)
-def update_item(
+def update_presentation(
     *,
     session: SessionDep,
     current_user: CurrentUser,
@@ -63,3 +63,13 @@ def delete_presentation(
     Delete a presentation.
     """
     return presentations.delete_presentation(session, presentation_id, current_user.id)
+
+
+@router.post("/{presentation_id}/sign_up", response_model=PresentationRead)
+def sign_up_for_presentation(
+    *, session: SessionDep, current_user: CurrentUser, presentation_id: int
+) -> Any:
+    """
+    Create new presentation.
+    """
+    return presentations.sign_up_for_presentation(session, presentation_id, current_user.id)

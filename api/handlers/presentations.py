@@ -105,3 +105,30 @@ def delete_presentation(session: SessionDep, presentation_id: int, user_id: int)
     session.delete(presentation)
     session.commit()
     return True
+
+
+def sign_up_for_presentation(session: SessionDep, presentation_id: int, user_id: int):
+    presentation = session.get(Presentation, presentation_id)
+    if not presentation:
+        raise HTTPException(status_code=404, detail="Presentation not found")
+
+    user_presentation = session.exec(
+        select(UserPresentation).where(UserPresentation.user_id == user_id,
+                                       UserPresentation.presentation_id == presentation_id)
+    ).first()
+    if user_presentation:
+        raise HTTPException(status_code=400, detail="You are already signed up for this presentation")
+
+    user_presentation = UserPresentation(user_id=user_id, presentation_id=presentation_id, user_role=Roles.listener)
+    session.add(user_presentation)
+    session.commit()
+    session.refresh(user_presentation)
+
+    return PresentationRead(
+        id=presentation.id,
+        report_id=presentation.report_id,
+        time_start=presentation.time_start,
+        time_end=presentation.time_end,
+        room_id=presentation.room_id,
+        role=Roles.listener.value
+    )
