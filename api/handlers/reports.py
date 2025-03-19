@@ -1,8 +1,5 @@
-from fastapi import HTTPException
-from sqlalchemy import func
 from sqlmodel import select
-
-from api.deps import CurrentUser, SessionDep
+from api.deps import SessionDep
 from api.models import Report, UserReport
 from api.schemas.reports import ReportRead, ReportCreate, ReportUpdate
 from api.utils import get_user_report

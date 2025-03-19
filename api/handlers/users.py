@@ -1,5 +1,4 @@
 from sqlmodel import Session
-
 from api.security import get_password_hash
 from api.models import User
 from api.schemas.users import UserRegister

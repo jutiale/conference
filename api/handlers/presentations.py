@@ -1,8 +1,7 @@
 from fastapi import HTTPException
 from sqlmodel import select
-
-from api.deps import SessionDep, CurrentUser
-from api.models import Presentation, UserReport, UserPresentation, Roles, Report
+from api.deps import SessionDep
+from api.models import Presentation, UserReport, UserPresentation, Roles
 from api.schemas.presentations import PresentationRead, PresentationCreate, PresentationUpdate
 from api.utils import get_user_report, get_presentation_for_presenter
 

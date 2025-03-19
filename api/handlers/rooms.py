@@ -1,11 +1,8 @@
 from fastapi import HTTPException
-from sqlalchemy import func
 from sqlmodel import select
-
-from api.deps import CurrentUser, SessionDep
-from api.models import Report, UserReport, Room
+from api.deps import SessionDep
+from api.models import Room
 from api.schemas.rooms import RoomRead, RoomCreate
-from api.utils import get_user_report
 
 
 def read_rooms(session: SessionDep, skip: int, limit: int) -> list[RoomRead]:

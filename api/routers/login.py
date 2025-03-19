@@ -1,14 +1,11 @@
 from datetime import timedelta
-from typing import Annotated, Any
-
+from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
-
-from api.deps import CurrentUser, SessionDep
+from api.deps import SessionDep
 from api import security
 from api.config import settings
-from api.schemas.users import UserRead
-from api.token import Token
+from api.schemas.token import Token
 from api.handlers import login
 
 router = APIRouter(tags=["login"])

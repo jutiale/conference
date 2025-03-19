@@ -1,12 +1,6 @@
-import uuid
 from typing import Any
-
-from fastapi import APIRouter, HTTPException
-from sqlmodel import func, select
-
+from fastapi import APIRouter
 from api.deps import CurrentUser, SessionDep
-from api.models import Report
-from api.schemas.reports import ReportRead, ReportCreate, ReportUpdate
 from api.handlers import rooms
 from api.schemas.rooms import RoomRead, RoomCreate
 

@@ -1,10 +1,8 @@
 import enum
-import uuid
-from datetime import time, datetime
-from typing import Annotated, Union
+from datetime import datetime
+from typing import Union
 
-# from fastapi import Depends, FastAPI, HTTPException, Query
-from sqlmodel import Field, Session, SQLModel, create_engine, select, Relationship
+from sqlmodel import Field, SQLModel, Relationship
 
 
 class Roles(enum.Enum):

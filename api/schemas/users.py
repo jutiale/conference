@@ -1,4 +1,4 @@
-from sqlmodel import Field, Relationship, SQLModel
+from sqlmodel import SQLModel
 
 
 class UserRead(SQLModel):

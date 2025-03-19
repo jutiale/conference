@@ -1,5 +1,4 @@
 from sqlmodel import select
-
 from api.deps import SessionDep
 from api.models import Presentation, Room
 from api.schemas.schedule import PresentationSchedule, RoomSchedule
@@ -15,7 +14,7 @@ def read_schedule(session: SessionDep):
 
     print(results)
 
-    grouped_results = {}  # ключ - id аудитории, значение - объект аудитории и список презентаций
+    grouped_results = {}  # key - id of room, value - room object and list of presentations
     for room, presentation in results:
         if room.id not in grouped_results:
             grouped_results[room.id] = {

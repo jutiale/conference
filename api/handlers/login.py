@@ -1,5 +1,4 @@
 from sqlmodel import Session, select
-
 from api.models import User
 from api.security import verify_password
 
