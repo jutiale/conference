@@ -1,6 +1,6 @@
 import enum
 import uuid
-from datetime import time
+from datetime import time, datetime
 from typing import Annotated, Union
 
 # from fastapi import Depends, FastAPI, HTTPException, Query
@@ -51,8 +51,8 @@ class Presentation(SQLModel, table=True):
 
     id: Union[int, None] = Field(default=None, primary_key=True)
     report_id: int = Field(foreign_key="reports.id", ondelete="CASCADE")
-    time_start: time
-    time_end: time
+    time_start: datetime
+    time_end: datetime
     room_id: int = Field(foreign_key="rooms.id")
 
     users_presentations: list["UserPresentation"] = Relationship(back_populates="presentation", cascade_delete=True)
