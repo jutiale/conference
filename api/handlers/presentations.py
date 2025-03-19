@@ -48,6 +48,7 @@ def create_presentation(session: SessionDep, presentation: PresentationCreate, u
         session.add(user_presentation)
 
     session.commit()
+    session.refresh(new_presentation)
 
     return PresentationRead(**new_presentation.model_dump())
 
