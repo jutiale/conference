@@ -12,7 +12,7 @@ class PresentationCreate(SQLModel):
 
 class PresentationRead(PresentationCreate):
     id: int
-    role: str  # User role in this presentation
+    # role: str  # User role in this presentation
 
 
 class PresentationUpdate(SQLModel):

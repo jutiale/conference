@@ -49,14 +49,7 @@ def create_presentation(session: SessionDep, presentation: PresentationCreate, u
 
     session.commit()
 
-    return PresentationRead(
-        id=new_presentation.id,
-        report_id=new_presentation.report_id,
-        time_start=new_presentation.time_start,
-        time_end=new_presentation.time_end,
-        room_id=new_presentation.room_id,
-        role=Roles.presenter.name
-    )
+    return PresentationRead(**new_presentation.model_dump())
 
 
 def get_presentation_by_id(session: SessionDep, presentation_id: int, user_id: int):
@@ -71,14 +64,7 @@ def get_presentation_by_id(session: SessionDep, presentation_id: int, user_id: i
     if not user_presentation:
         raise HTTPException(status_code=403, detail="Access denied")
 
-    return PresentationRead(
-        id=presentation.id,
-        report_id=presentation.report_id,
-        time_start=presentation.time_start,
-        time_end=presentation.time_end,
-        room_id=presentation.room_id,
-        role=user_presentation.user_role
-    )
+    return PresentationRead(**presentation.model_dump())
 
 
 def update_presentation(session: SessionDep, presentation_id: int, user_id: int, presentation_in: PresentationUpdate):
@@ -90,14 +76,7 @@ def update_presentation(session: SessionDep, presentation_id: int, user_id: int,
     session.commit()
     session.refresh(presentation)
 
-    return PresentationRead(
-        id=presentation.id,
-        report_id=presentation.report_id,
-        time_start=presentation.time_start,
-        time_end=presentation.time_end,
-        room_id=presentation.room_id,
-        role=Roles.presenter.value
-    )
+    return PresentationRead(**presentation.model_dump())
 
 
 def delete_presentation(session: SessionDep, presentation_id: int, user_id: int):
@@ -124,11 +103,5 @@ def sign_up_for_presentation(session: SessionDep, presentation_id: int, user_id:
     session.commit()
     session.refresh(user_presentation)
 
-    return PresentationRead(
-        id=presentation.id,
-        report_id=presentation.report_id,
-        time_start=presentation.time_start,
-        time_end=presentation.time_end,
-        room_id=presentation.room_id,
-        role=Roles.listener.value
-    )
+    return PresentationRead(**presentation.model_dump())
+
