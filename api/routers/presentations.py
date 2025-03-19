@@ -22,12 +22,12 @@ def read_presentations(
     return presentations.read_presentations(session, current_user.id, skip, limit)
 
 
-# @router.get("/{presentation_id}", response_model=PresentationRead)
-# def read_presentattion(session: SessionDep, current_user: CurrentUser, presentation_id: int) -> Any:
-#     """
-#     Get presentation by ID.
-#     """
-#     return presentations.get_presentation_by_id(session, presentation_id, current_user.id)
+@router.get("/{presentation_id}", response_model=PresentationRead)
+def read_presentattion(session: SessionDep, current_user: CurrentUser, presentation_id: int) -> Any:
+    """
+    Get presentation by ID.
+    """
+    return presentations.get_presentation_by_id(session, presentation_id, current_user.id)
 
 
 @router.post("/", response_model=PresentationRead)
@@ -38,22 +38,22 @@ def create_presentation(
     Create new presentation.
     """
     return presentations.create_presentation(session, report_in, current_user.id)
-#
-#
-# @router.put("/{report_id}", response_model=ReportRead)
-# def update_item(
-#     *,
-#     session: SessionDep,
-#     current_user: CurrentUser,
-#     report_id: int,
-#     report_in: ReportUpdate,
-# ) -> Any:
-#     """
-#     Update a report.
-#     """
-#
-#     return reports.update_report(session, report_id, current_user.id, report_in)
-#
+
+
+@router.put("/{presentation_id}", response_model=PresentationRead)
+def update_item(
+    *,
+    session: SessionDep,
+    current_user: CurrentUser,
+    presentation_id: int,
+    presentation_in: PresentationUpdate,
+) -> Any:
+    """
+    Update a presentation.
+    """
+
+    return presentations.update_presentation(session, presentation_id, current_user.id, presentation_in)
+
 #
 # @router.delete("/{report_id}")
 # def delete_item(

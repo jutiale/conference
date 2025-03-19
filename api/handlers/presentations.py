@@ -3,8 +3,8 @@ from sqlmodel import select
 
 from api.deps import SessionDep, CurrentUser
 from api.models import Presentation, UserReport, UserPresentation, Roles, Report
-from api.schemas.presentations import PresentationRead, PresentationCreate
-from api.utils import get_user_report
+from api.schemas.presentations import PresentationRead, PresentationCreate, PresentationUpdate
+from api.utils import get_user_report, get_presentation_for_presenter
 
 
 def read_presentations(session: SessionDep, user_id: int, skip: int, limit: int):
@@ -59,6 +59,42 @@ def create_presentation(session: SessionDep, presentation: PresentationCreate, u
     )
 
 
+def get_presentation_by_id(session: SessionDep, presentation_id: int, user_id: int):
+    presentation = session.get(Presentation, presentation_id)
+    if not presentation:
+        raise HTTPException(status_code=404, detail="Presentation not found")
 
-# def get_report_by_id(session: SessionDep, report_id: int, user_id: int):
-#     return get_user_report(session, report_id, user_id)
+    user_presentation = session.exec(
+        select(UserPresentation).where(UserPresentation.user_id == user_id,
+                                       UserPresentation.presentation_id == presentation_id)
+    ).first()
+    if not user_presentation:
+        raise HTTPException(status_code=403, detail="Access denied")
+
+    return PresentationRead(
+        id=presentation.id,
+        report_id=presentation.report_id,
+        time_start=presentation.time_start,
+        time_end=presentation.time_end,
+        room_id=presentation.room_id,
+        role=user_presentation.user_role
+    )
+
+
+def update_presentation(session: SessionDep, presentation_id: int, user_id: int, presentation_in: PresentationUpdate):
+    presentation = get_presentation_for_presenter(session, presentation_id, user_id)
+
+    update_dict = presentation_in.model_dump(exclude_unset=True)
+    presentation.sqlmodel_update(update_dict)
+    session.add(presentation)
+    session.commit()
+    session.refresh(presentation)
+
+    return PresentationRead(
+        id=presentation.id,
+        report_id=presentation.report_id,
+        time_start=presentation.time_start,
+        time_end=presentation.time_end,
+        room_id=presentation.room_id,
+        role=Roles.presenter.value
+    )
