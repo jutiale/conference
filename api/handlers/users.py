@@ -1,11 +1,8 @@
-import uuid
-from typing import Any
+from sqlmodel import Session
 
-from sqlmodel import Session, select
-
-from api.security import get_password_hash, verify_password
+from api.security import get_password_hash
 from api.models import User
-from api.schemas import UserRegister
+from api.schemas.users import UserRegister
 
 
 def create_user(*, session: Session, user_create: UserRegister) -> User:

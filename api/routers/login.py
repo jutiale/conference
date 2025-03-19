@@ -2,14 +2,12 @@ from datetime import timedelta
 from typing import Annotated, Any
 
 from fastapi import APIRouter, Depends, HTTPException
-from fastapi.responses import HTMLResponse
 from fastapi.security import OAuth2PasswordRequestForm
 
 from api.deps import CurrentUser, SessionDep
 from api import security
 from api.config import settings
-from api.security import get_password_hash
-from api.schemas import UserRead
+from api.schemas.users import UserRead
 from api.token import Token
 from api.handlers import login
 

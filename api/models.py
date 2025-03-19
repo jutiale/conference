@@ -4,13 +4,21 @@ from datetime import time
 from typing import Annotated, Union
 
 # from fastapi import Depends, FastAPI, HTTPException, Query
-from sqlmodel import Field, Session, SQLModel, create_engine, select
+from sqlmodel import Field, Session, SQLModel, create_engine, select, Relationship
 
 
 class Roles(enum.Enum):
     presenter = 'presenter'
     listener = 'listener'
     admin = 'admin'
+
+
+class UserReport(SQLModel, table=True):
+    __tablename__ = "users_reports"
+
+    id: Union[int, None] = Field(default=None, primary_key=True)
+    user_id: int = Field(foreign_key="users.id")
+    report_id: int = Field(foreign_key="reports.id")
 
 
 class User(SQLModel, table=True):
@@ -20,6 +28,8 @@ class User(SQLModel, table=True):
     name: str
     password_hash: str
 
+    reports: list["Report"] = Relationship(back_populates="users", link_model=UserReport)
+
 
 class Report(SQLModel, table=True):
     __tablename__ = "reports"
@@ -28,13 +38,7 @@ class Report(SQLModel, table=True):
     name: str
     text: str
 
-
-class UserReport(SQLModel, table=True):
-    __tablename__ = "users_reports"
-
-    id: Union[int, None] = Field(default=None, primary_key=True)
-    user_id: int = Field(foreign_key="users.id")
-    report_id: int = Field(foreign_key="reports.id")
+    users: list["User"] = Relationship(back_populates="reports", link_model=UserReport)
 
 
 class Room(SQLModel, table=True):
@@ -61,4 +65,3 @@ class UserPresentation(SQLModel, table=True):
     user_id: int = Field(foreign_key="users.id")
     presentation_id: int = Field(foreign_key="presentations.id")
     user_role: Roles
-

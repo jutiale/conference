@@ -1,19 +1,12 @@
-import uuid
 from typing import Any
 
-from fastapi import APIRouter, Depends, HTTPException
-from sqlmodel import col, delete, func, select
+from fastapi import APIRouter, HTTPException
 
 from api.handlers import users, login
-from api.schemas import UserRead, UserRegister
+from api.schemas.users import UserRead, UserRegister
 from api.deps import (
     CurrentUser,
     SessionDep,
-)
-from api.config import settings
-from api.security import get_password_hash, verify_password
-from api.models import (
-    User
 )
 
 router = APIRouter(prefix="/users", tags=["users"])
