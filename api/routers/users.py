@@ -4,7 +4,7 @@ from typing import Any
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import col, delete, func, select
 
-from api.handlers import users
+from api.handlers import users, login
 from api.schemas import UserRead, UserRegister
 from api.deps import (
     CurrentUser,
@@ -24,12 +24,12 @@ def register_user(session: SessionDep, user_in: UserRegister) -> Any:
     """
     Create new user
     """
-    # user = crud.get_user_by_email(session=session, email=user_in.email)
-    # if user:
-    #     raise HTTPException(
-    #         status_code=400,
-    #         detail="The user with this email already exists in the system",
-    #     )
+    user = login.get_user_by_name(session=session, name=user_in.name)
+    if user:
+        raise HTTPException(
+            status_code=400,
+            detail="The user with this name already exists in the system",
+        )
     user_create = UserRegister.model_validate(user_in)
     user = users.create_user(session=session, user_create=user_create)
     return user
