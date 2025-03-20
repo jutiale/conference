@@ -3,15 +3,15 @@ import pytest
 from faker import Faker
 from sqlmodel import Session, SQLModel
 from fastapi.testclient import TestClient
-from api.db import engine
-from api.handlers.reports import create_report
-from api.models import User, Room, Report, UserReport
-from api.schemas.presentations import PresentationCreate
-from api.schemas.reports import ReportCreate
-from api.schemas.rooms import RoomCreate
-from api.schemas.users import UserRegister
-from main import app
-from api.tests.utils import authentication_token_from_name, create_room, create_random_password, create_presentation, \
+from app.api.db import engine
+from app.api.handlers.reports import create_report
+from app.api.models import User, Room, Report
+from app.api.schemas.presentations import PresentationCreate
+from app.api.schemas.reports import ReportCreate
+from app.api.schemas.rooms import RoomCreate
+from app.api.schemas.users import UserRegister
+from app.main import app
+from app.api.tests.utils import authentication_token_from_name, create_room, create_random_password, create_presentation, \
     create_user
 
 fake = Faker()

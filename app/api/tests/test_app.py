@@ -4,8 +4,8 @@ import json
 from fastapi.testclient import TestClient
 from sqlmodel import Session
 
-from api.config import settings
-from api.models import Report, Presentation
+from app.api.config import settings
+from app.api.models import Report, Presentation
 
 
 def test_create_report(

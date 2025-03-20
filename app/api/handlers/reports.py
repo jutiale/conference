@@ -1,8 +1,8 @@
 from sqlmodel import select
-from api.deps import SessionDep
-from api.models import Report, UserReport
-from api.schemas.reports import ReportRead, ReportCreate, ReportUpdate
-from api.utils import get_user_report
+from app.api.deps import SessionDep
+from app.api.models import Report, UserReport
+from app.api.schemas.reports import ReportRead, ReportCreate, ReportUpdate
+from app.api.utils import get_user_report
 
 
 def read_reports(session: SessionDep, user_id: int, skip: int, limit: int) -> list[ReportRead]:

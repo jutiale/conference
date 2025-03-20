@@ -2,12 +2,12 @@ import secrets
 import string
 from fastapi.testclient import TestClient
 from sqlmodel import Session, select
-from api.models import Room, Presentation, UserReport, UserPresentation, Roles, User
-from api.handlers import login
-from api.schemas.presentations import PresentationCreate
-from api.schemas.rooms import RoomCreate
-from api.schemas.users import UserRegister, UserUpdate
-from api.security import get_password_hash
+from app.api.models import Room, Presentation, UserReport, UserPresentation, Roles, User
+from app.api.handlers import login
+from app.api.schemas.presentations import PresentationCreate
+from app.api.schemas.rooms import RoomCreate
+from app.api.schemas.users import UserRegister, UserUpdate
+from app.api.security import get_password_hash
 
 
 def update_user(*, session: Session, db_user: User, user_in: UserUpdate):

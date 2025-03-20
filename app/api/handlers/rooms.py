@@ -1,8 +1,8 @@
 from fastapi import HTTPException
 from sqlmodel import select
-from api.deps import SessionDep
-from api.models import Room
-from api.schemas.rooms import RoomRead, RoomCreate
+from app.api.deps import SessionDep
+from app.api.models import Room
+from app.api.schemas.rooms import RoomRead, RoomCreate
 
 
 def read_rooms(session: SessionDep, skip: int, limit: int) -> list[RoomRead]:

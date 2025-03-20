@@ -1,9 +1,9 @@
 from fastapi import HTTPException
 from sqlmodel import select
-from api.deps import SessionDep
-from api.models import Presentation, UserReport, UserPresentation, Roles
-from api.schemas.presentations import PresentationRead, PresentationCreate, PresentationUpdate
-from api.utils import get_user_report, get_presentation_for_presenter, check_presentation_overlap
+from app.api.deps import SessionDep
+from app.api.models import Presentation, UserReport, UserPresentation, Roles
+from app.api.schemas.presentations import PresentationRead, PresentationCreate, PresentationUpdate
+from app.api.utils import get_user_report, get_presentation_for_presenter, check_presentation_overlap
 
 
 def read_presentations(session: SessionDep, user_id: int, skip: int, limit: int):

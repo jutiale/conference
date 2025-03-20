@@ -1,11 +1,11 @@
 from fastapi import APIRouter
 
-from api.routers import users
-from api.routers import login
-from api.routers import reports
-from api.routers import presentations
-from api.routers import rooms
-from api.routers import schedule
+from app.api.routers import users
+from app.api.routers import login
+from app.api.routers import reports
+from app.api.routers import presentations
+from app.api.routers import rooms
+from app.api.routers import schedule
 
 
 api_router = APIRouter()

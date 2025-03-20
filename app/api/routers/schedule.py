@@ -1,8 +1,8 @@
 from typing import Any
 from fastapi import APIRouter
-from api.deps import CurrentUser, SessionDep
-from api.handlers import schedule
-from api.schemas.schedule import RoomSchedule
+from app.api.deps import CurrentUser, SessionDep
+from app.api.handlers import schedule
+from app.api.schemas.schedule import RoomSchedule
 
 router = APIRouter(prefix="/schedule", tags=["schedule"])
 

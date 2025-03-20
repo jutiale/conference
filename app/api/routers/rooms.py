@@ -1,8 +1,8 @@
 from typing import Any
 from fastapi import APIRouter
-from api.deps import CurrentUser, SessionDep
-from api.handlers import rooms
-from api.schemas.rooms import RoomRead, RoomCreate
+from app.api.deps import CurrentUser, SessionDep
+from app.api.handlers import rooms
+from app.api.schemas.rooms import RoomRead, RoomCreate
 
 router = APIRouter(prefix="/rooms", tags=["rooms"])
 

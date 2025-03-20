@@ -6,11 +6,11 @@ from fastapi.security import OAuth2PasswordBearer
 from jwt.exceptions import InvalidTokenError
 from pydantic import ValidationError
 from sqlmodel import Session
-from api import security
-from api.config import settings
-from api.db import engine
-from api.schemas.token import TokenPayload
-from api.models import User
+from app.api import security
+from app.api.config import settings
+from app.api.db import engine
+from app.api.schemas.token import TokenPayload
+from app.api.models import User
 
 
 reusable_oauth2 = OAuth2PasswordBearer(

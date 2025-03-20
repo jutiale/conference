@@ -12,10 +12,7 @@ COPY poetry.lock pyproject.toml ./
 RUN poetry install --no-root
 
 COPY entrypoint.sh .
-COPY api ./api
-COPY main.py .
-COPY alembic ./alembic
-COPY alembic.ini .
+COPY app .
 
 
 RUN chmod u+x ./entrypoint.sh

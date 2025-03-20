@@ -1,8 +1,8 @@
 from typing import Any
 from fastapi import APIRouter
-from api.deps import CurrentUser, SessionDep
-from api.schemas.presentations import PresentationRead, PresentationCreate, PresentationUpdate
-from api.handlers import presentations
+from app.api.deps import CurrentUser, SessionDep
+from app.api.schemas.presentations import PresentationRead, PresentationCreate, PresentationUpdate
+from app.api.handlers import presentations
 
 router = APIRouter(prefix="/presentations", tags=["presentations"])
 

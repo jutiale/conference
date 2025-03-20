@@ -1,7 +1,7 @@
 from sqlmodel import select
-from api.deps import SessionDep
-from api.models import Presentation, Room
-from api.schemas.schedule import PresentationSchedule, RoomSchedule
+from app.api.deps import SessionDep
+from app.api.models import Presentation, Room
+from app.api.schemas.schedule import PresentationSchedule, RoomSchedule
 
 
 def read_schedule(session: SessionDep):

@@ -4,10 +4,8 @@ from typing import Type
 from fastapi import HTTPException
 from sqlmodel import Session, select
 
-from api.models import Report, UserReport, Presentation, UserPresentation, Roles, User
-from api.schemas.presentations import PresentationCreate
-from api.schemas.users import UserUpdate, UserRegister
-from api.security import get_password_hash
+from app.api.models import Report, UserReport, Presentation, UserPresentation, Roles, User
+from app.api.security import get_password_hash
 
 
 def get_user_report(session: Session, report_id: int, user_id: int) -> Type[Report]:

@@ -1,7 +1,7 @@
 from sqlmodel import Session
-from api.security import get_password_hash
-from api.models import User
-from api.schemas.users import UserRegister
+from app.api.security import get_password_hash
+from app.api.models import User
+from app.api.schemas.users import UserRegister
 
 
 def create_user(*, session: Session, user_create: UserRegister) -> User:

@@ -2,9 +2,9 @@ from typing import Any
 
 from fastapi import APIRouter, HTTPException
 
-from api.handlers import users, login
-from api.schemas.users import UserRead, UserRegister
-from api.deps import (
+from app.api.handlers import users, login
+from app.api.schemas.users import UserRead, UserRegister
+from app.api.deps import (
     CurrentUser,
     SessionDep,
 )

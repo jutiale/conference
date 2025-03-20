@@ -2,11 +2,11 @@ from datetime import timedelta
 from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
-from api.deps import SessionDep
-from api import security
-from api.config import settings
-from api.schemas.token import Token
-from api.handlers import login
+from app.api.deps import SessionDep
+from app.api import security
+from app.api.config import settings
+from app.api.schemas.token import Token
+from app.api.handlers import login
 
 router = APIRouter(tags=["login"])
 

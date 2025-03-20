@@ -1,6 +1,6 @@
 from sqlmodel import Session, select
-from api.models import User
-from api.security import verify_password
+from app.api.models import User
+from app.api.security import verify_password
 
 
 def get_user_by_name(*, session: Session, name: str) -> User | None:
