@@ -43,25 +43,4 @@ def get_presentation_for_presenter(session: Session, presentation_id: int, user_
     return user_presentation.presentation
 
 
-def update_user(*, session: Session, db_user: User, user_in: UserUpdate):
-    user_data = user_in.model_dump(exclude_unset=True)
-    extra_data = {}
-    if "password" in user_data:
-        password = user_data["password"]
-        hashed_password = get_password_hash(password)
-        extra_data["hashed_password"] = hashed_password
-    db_user.sqlmodel_update(user_data, update=extra_data)
-    session.add(db_user)
-    session.commit()
-    session.refresh(db_user)
-    return db_user
 
-
-def create_user(*, session: Session, user_create: UserRegister) -> User:
-    db_obj = User.model_validate(
-        user_create, update={"password_hash": get_password_hash(user_create.password)}
-    )
-    session.add(db_obj)
-    session.commit()
-    session.refresh(db_obj)
-    return db_obj

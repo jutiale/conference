@@ -10,9 +10,9 @@ from api.schemas.presentations import PresentationCreate
 from api.schemas.reports import ReportCreate
 from api.schemas.rooms import RoomCreate
 from api.schemas.users import UserRegister
-from api.utils import create_user
 from main import app
-from api.tests.utils import authentication_token_from_name, create_room, create_random_password, create_presentation
+from api.tests.utils import authentication_token_from_name, create_room, create_random_password, create_presentation, \
+    create_user
 
 fake = Faker()
 
