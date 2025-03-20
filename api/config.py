@@ -32,6 +32,7 @@ class Settings(BaseSettings):
     SQLALCHEMY_DATABASE_URI: Optional[
         Any
     ] = f"postgresql+psycopg://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_DB}"
+    TEST_DATABASE_URI: str = os.environ.get("TEST_DATABASE_URI")
 
 
 settings = Settings()

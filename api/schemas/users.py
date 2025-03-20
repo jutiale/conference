@@ -8,3 +8,8 @@ class UserRead(SQLModel):
 class UserRegister(SQLModel):
     password: str
     name: str
+
+
+class UserUpdate(SQLModel):
+    password: str
+    name: str

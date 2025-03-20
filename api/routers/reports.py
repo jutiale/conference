@@ -4,7 +4,7 @@ from api.deps import CurrentUser, SessionDep
 from api.schemas.reports import ReportRead, ReportCreate, ReportUpdate
 from api.handlers import reports
 
-router = APIRouter(prefix="/report", tags=["reports"])
+router = APIRouter(prefix="/reports", tags=["reports"])
 
 
 @router.get("/", summary="Получить свои доклады", response_model=list[ReportRead])
