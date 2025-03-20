@@ -1,11 +1,8 @@
 import secrets
 import string
-
 from fastapi.testclient import TestClient
 from sqlmodel import Session, select
-from faker import Faker
-from api.config import settings
-from api.models import User, Report, Room, Presentation, UserReport, UserPresentation, Roles
+from api.models import Room, Presentation, UserReport, UserPresentation, Roles
 from api.handlers import login
 from api.schemas.presentations import PresentationCreate
 from api.schemas.rooms import RoomCreate
@@ -49,15 +46,6 @@ def authentication_token_from_name(
         user = update_user(session=session, db_user=user, user_in=user_in_update)
 
     return user_authentication_headers(client=client, name=name, password=password)
-
-
-def create_random_user(session: Session) -> User:
-    fake = Faker()
-    name = fake.name()
-    password = create_random_password()
-    user_in = UserRegister(name=name, password=password)
-    user = create_user(session=session, user_create=user_in)
-    return user
 
 
 def create_room(session: Session, room_in: RoomCreate) -> Room:

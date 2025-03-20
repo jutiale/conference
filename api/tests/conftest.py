@@ -1,5 +1,4 @@
 from typing import Generator
-
 import pytest
 from faker import Faker
 from sqlmodel import Session, SQLModel
@@ -21,8 +20,6 @@ fake = Faker()
 @pytest.fixture(scope="session", autouse=True)
 def db() -> Generator[Session, None, None]:
     with Session(engine) as session:
-        # init_db(session)
-        # yield session
         SQLModel.metadata.create_all(engine)
         yield session
         session.close()
