@@ -1,9 +1,11 @@
+from datetime import datetime
 from typing import Type
 
 from fastapi import HTTPException
 from sqlmodel import Session, select
 
 from api.models import Report, UserReport, Presentation, UserPresentation, Roles, User
+from api.schemas.presentations import PresentationCreate
 from api.schemas.users import UserUpdate, UserRegister
 from api.security import get_password_hash
 
@@ -43,4 +45,14 @@ def get_presentation_for_presenter(session: Session, presentation_id: int, user_
     return user_presentation.presentation
 
 
+def check_presentation_overlap(session: Session, room_id: int, time_start: datetime, time_end: datetime):
+    overlapping_presentation = session.exec(select(Presentation).where(
+        Presentation.room_id == room_id,
+        Presentation.time_start < time_end, Presentation.time_end > time_start)
+    ).first()
 
+    if overlapping_presentation:
+        raise HTTPException(
+            status_code=400,
+            detail="Time overlap in this room"
+        )

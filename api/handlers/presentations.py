@@ -3,7 +3,7 @@ from sqlmodel import select
 from api.deps import SessionDep
 from api.models import Presentation, UserReport, UserPresentation, Roles
 from api.schemas.presentations import PresentationRead, PresentationCreate, PresentationUpdate
-from api.utils import get_user_report, get_presentation_for_presenter
+from api.utils import get_user_report, get_presentation_for_presenter, check_presentation_overlap
 
 
 def read_presentations(session: SessionDep, user_id: int, skip: int, limit: int):
@@ -23,15 +23,7 @@ def create_presentation(session: SessionDep, presentation: PresentationCreate, u
     # Access check
     report = get_user_report(session, presentation.report_id, user_id)
 
-    overlapping_presentation = session.exec(select(Presentation).where(
-            Presentation.room_id == presentation.room_id,
-            Presentation.time_start < presentation.time_end, Presentation.time_end > presentation.time_start)
-    ).first()
-    if overlapping_presentation:
-        raise HTTPException(
-            status_code=400,
-            detail="Time overlap in this room"
-        )
+    check_presentation_overlap(session, presentation.room_id, presentation.time_start, presentation.time_end)
 
     presentation_data = presentation.model_dump()
     new_presentation = Presentation(**presentation_data)
@@ -69,6 +61,8 @@ def get_presentation_by_id(session: SessionDep, presentation_id: int, user_id: i
 
 def update_presentation(session: SessionDep, presentation_id: int, user_id: int, presentation_in: PresentationUpdate):
     presentation = get_presentation_for_presenter(session, presentation_id, user_id)
+
+    check_presentation_overlap(session, presentation.room_id, presentation.time_start, presentation.time_end)
 
     update_dict = presentation_in.model_dump(exclude_unset=True)
     presentation.sqlmodel_update(update_dict)
