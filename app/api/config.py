@@ -22,6 +22,7 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 8
 
     load_dotenv()
+    NAME_TEST_USER: str = os.environ.get("NAME_TEST_USER")
     SECRET_KEY: str = os.environ.get("SECRET_KEY")
     POSTGRES_SERVER: str = os.environ.get("POSTGRES_SERVER")
     POSTGRES_PORT: str = os.environ.get("POSTGRES_PORT")

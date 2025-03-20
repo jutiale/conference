@@ -3,6 +3,8 @@ import pytest
 from faker import Faker
 from sqlmodel import Session, SQLModel
 from fastapi.testclient import TestClient
+
+from app.api.config import settings
 from app.api.db import engine
 from app.api.handlers.reports import create_report
 from app.api.models import User, Room, Report
@@ -48,7 +50,7 @@ def setup_test_data_room(db: Session) -> Room:
 
 @pytest.fixture(scope="function")
 def setup_test_data_user(db: Session) -> User:
-    name = fake.name()
+    name = settings.NAME_TEST_USER
     password = create_random_password()
     user_in = UserRegister(name=name, password=password)
     user = create_user(session=db, user_create=user_in)
