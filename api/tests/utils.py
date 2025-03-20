@@ -2,11 +2,12 @@ import secrets
 import string
 
 from fastapi.testclient import TestClient
-from sqlmodel import Session
+from sqlmodel import Session, select
 from faker import Faker
 from api.config import settings
-from api.models import User, Report, Room
+from api.models import User, Report, Room, Presentation, UserReport, UserPresentation, Roles
 from api.handlers import login
+from api.schemas.presentations import PresentationCreate
 from api.schemas.rooms import RoomCreate
 from api.utils import update_user, create_user
 from api.schemas.users import UserRegister, UserUpdate
@@ -66,4 +67,25 @@ def create_room(session: Session, room_in: RoomCreate) -> Room:
     session.commit()
     session.refresh(room)
     return room
+
+
+# No overlap check
+def create_presentation(session: Session, presentation: PresentationCreate, user_id: int):
+    presentation_data = presentation.model_dump()
+    new_presentation = Presentation(**presentation_data)
+    session.add(new_presentation)
+    session.flush()
+    session.refresh(new_presentation)
+
+    # Add all report authors to presentation
+    users_reports = session.exec(select(UserReport).where(UserReport.report_id == presentation.report_id)).all()
+    for user in users_reports:
+        user_presentation = UserPresentation(user_id=user.user_id, presentation_id=new_presentation.id,
+                                             user_role=Roles.presenter)
+        session.add(user_presentation)
+
+    session.commit()
+    session.refresh(new_presentation)
+    return new_presentation
+
 

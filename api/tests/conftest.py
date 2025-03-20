@@ -6,13 +6,14 @@ from sqlmodel import Session, SQLModel
 from fastapi.testclient import TestClient
 from api.db import engine
 from api.handlers.reports import create_report
-from api.models import User, Room
+from api.models import User, Room, Report, UserReport
+from api.schemas.presentations import PresentationCreate
 from api.schemas.reports import ReportCreate
 from api.schemas.rooms import RoomCreate
 from api.schemas.users import UserRegister
 from api.utils import create_user
 from main import app
-from api.tests.utils import authentication_token_from_name, create_room, create_random_password
+from api.tests.utils import authentication_token_from_name, create_room, create_random_password, create_presentation
 
 fake = Faker()
 
@@ -58,7 +59,7 @@ def setup_test_data_user(db: Session) -> User:
 
 
 @pytest.fixture
-def setup_test_data_report(db: Session, setup_test_data_user: User, setup_test_data_room: Room):
+def setup_test_data_report(db: Session, setup_test_data_user: User, setup_test_data_room: Room) -> Report:
     report_data = ReportCreate(
         name=fake.sentence(),
         text=fake.text(),
@@ -67,3 +68,11 @@ def setup_test_data_report(db: Session, setup_test_data_user: User, setup_test_d
     )
     report = create_report(db, report_data, user_id=setup_test_data_user.id)
     return report
+
+
+@pytest.fixture
+def setup_test_data_presentation(db: Session, setup_test_data_report: Report):
+    presentation_data = PresentationCreate(room_id=1, report_id=1, time_start="2025-03-20T09:30:00",
+                                           time_end="2025-03-20T10:00:00")
+    presentation = create_presentation(db, presentation_data, user_id=1)
+    return presentation
