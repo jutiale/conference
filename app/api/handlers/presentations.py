@@ -97,5 +97,5 @@ def sign_up_for_presentation(session: SessionDep, presentation_id: int, user_id:
     session.commit()
     session.refresh(user_presentation)
 
-    return PresentationRead(**presentation.model_dump())
+    return PresentationRead.model_validate(presentation)
 

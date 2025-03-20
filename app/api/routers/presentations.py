@@ -66,6 +66,6 @@ def sign_up_for_presentation(
     *, session: SessionDep, current_user: CurrentUser, presentation_id: int
 ) -> Any:
     """
-    Create new presentation.
+    Sign up for presentation.
     """
     return presentations.sign_up_for_presentation(session, presentation_id, current_user.id)
