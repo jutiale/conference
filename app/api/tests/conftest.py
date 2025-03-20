@@ -1,33 +1,42 @@
 from typing import Generator
 import pytest
 from faker import Faker
-from sqlmodel import Session, SQLModel
+from sqlmodel import Session, create_engine
 from fastapi.testclient import TestClient
 
 from app.api.config import settings
-from app.api.db import engine
+from app.api.deps import get_db
 from app.api.handlers.reports import create_report
-from app.api.models import User, Room, Report
 from app.api.schemas.presentations import PresentationCreate
 from app.api.schemas.reports import ReportCreate
 from app.api.schemas.rooms import RoomCreate
 from app.api.schemas.users import UserRegister
 from app.main import app
-from app.api.tests.utils import authentication_token_from_name, create_room, create_random_password, create_presentation, \
+from app.api.tests.utils import authentication_token_from_name, create_room, create_random_password, \
+    create_presentation, \
     create_user
+from app.api.models import *
 
 fake = Faker()
 
+engine = create_engine(settings.TEST_DATABASE_URI, echo=True)
+TestingSessionLocal = Session(engine)
+
+
+def override_get_db():
+    with TestingSessionLocal as session:
+        yield session
+
+
+app.dependency_overrides[get_db] = override_get_db
+
 
 @pytest.fixture(scope="session", autouse=True)
-def db() -> Generator[Session, None, None]:
-    with Session(engine) as session:
-        # drop demo data
-        SQLModel.metadata.drop_all(engine)
-        SQLModel.metadata.create_all(engine)
+def db() -> Session:
+    SQLModel.metadata.create_all(engine)
+    with TestingSessionLocal as session:
         yield session
-        session.close()
-        SQLModel.metadata.drop_all(engine)
+    SQLModel.metadata.drop_all(engine)
 
 
 @pytest.fixture(scope="module")
@@ -39,7 +48,7 @@ def client() -> Generator[TestClient, None, None]:
 @pytest.fixture(scope="module")
 def user_token_headers(client: TestClient, db: Session) -> dict[str, str]:
     return authentication_token_from_name(
-        client=client, name=fake.name(), session=db
+        client=client, name=settings.NAME_TEST_USER, session=db
     )
 
 

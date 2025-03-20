@@ -16,7 +16,7 @@ def update_user(*, session: Session, db_user: User, user_in: UserUpdate):
     if "password" in user_data:
         password = user_data["password"]
         hashed_password = get_password_hash(password)
-        extra_data["hashed_password"] = hashed_password
+        extra_data["password_hash"] = hashed_password
     db_user.sqlmodel_update(user_data, update=extra_data)
     session.add(db_user)
     session.commit()
@@ -42,8 +42,7 @@ def user_authentication_headers(
     *, client: TestClient, name: str, password: str
 ) -> dict[str, str]:
     data = {"username": name, "password": password}
-
-    r = client.post(f"api/login/access-token", data=data)
+    r = client.post(f"/api/login/access-token", data=data)
     response = r.json()
     auth_token = response["access_token"]
     headers = {"Authorization": f"Bearer {auth_token}"}
