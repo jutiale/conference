@@ -6,7 +6,7 @@ ENV POETRY_HOME="/usr/local"
 ENV POETRY_VERSION=2.0.1
 RUN curl -sSL https://install.python-poetry.org | python3 -
 
-WORKDIR /api
+WORKDIR /app
 COPY poetry.lock pyproject.toml ./
 
 RUN poetry install --no-root
